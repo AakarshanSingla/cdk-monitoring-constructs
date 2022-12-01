@@ -56,6 +56,10 @@ export class UsageAlarmFactory {
     });
   }
 
+  /**
+   * @depreated Does not allow addition of multiple metrics.
+   *
+   */
   addMaxCpuUsagePercentAlarm(
     percentMetric: MetricWithAlarmSupport,
     props: UsageThreshold,
@@ -71,6 +75,30 @@ export class UsageAlarmFactory {
       disambiguator,
       threshold: props.maxUsagePercent,
       alarmNameSuffix: "CPU-Usage",
+      alarmDescription: "The CPU usage is too high.",
+    });
+  }
+
+  /**
+   * @depreated Does not allow addition of multiple metrics.
+   *
+   */
+  addMaxCpuUsagePercentAlarms(
+    percentMetric: MetricWithAlarmSupport,
+    usageType: UsageType,
+    props: UsageThreshold,
+    disambiguator?: string
+  ) {
+    return this.alarmFactory.addAlarm(percentMetric, {
+      treatMissingData:
+        props.treatMissingDataOverride ?? TreatMissingData.MISSING,
+      comparisonOperator:
+        props.comparisonOperatorOverride ??
+        ComparisonOperator.GREATER_THAN_THRESHOLD,
+      ...props,
+      disambiguator,
+      threshold: props.maxUsagePercent,
+      alarmNameSuffix: `CPU-Usage-${usageType}`,
       alarmDescription: "The CPU usage is too high.",
     });
   }
